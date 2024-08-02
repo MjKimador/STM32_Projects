@@ -328,15 +328,67 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
+// Timer rolled over
+void TIM16_IRQHandler(void)
+{
+	// Acknowledge interrupt
+	HAL_TIM_IRQHandler(&htim16);
 
+	// TODO: Change LED pattern
+	// print something
+	switch (pattern) {
+	        case 1:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_4 | LL_GPIO_PIN_7);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6);
+	            break;
+	        case 2:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_3 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_2 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5);
+	            break;
+	        case 3:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_2 | LL_GPIO_PIN_5);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_1 | LL_GPIO_PIN_3 | LL_GPIO_PIN_4 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            break;
+	        case 4:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_1 | LL_GPIO_PIN_4);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            break;
+	        case 5:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_3);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            break;
+	        case 6:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_2);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_3 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            break;
+	        case 7:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_1);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            break;
+	        case 8:
+	            LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0);
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            break;
+	        case 9:
+	            LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0 | LL_GPIO_PIN_1 | LL_GPIO_PIN_2 | LL_GPIO_PIN_3 | LL_GPIO_PIN_4 | LL_GPIO_PIN_5 | LL_GPIO_PIN_6 | LL_GPIO_PIN_7);
+	            break;
+	    }
+
+	    // Update pattern
+	    pattern++;
+	    if (pattern > 9) {
+	        pattern = 1;
+	    }
+
+  
+}
 
 /* USER CODE END 4 */
 
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None
-  */
-
+*/
 
 #ifdef  USE_FULL_ASSERT
 /**
