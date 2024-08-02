@@ -125,6 +125,7 @@ int main(void)
   * @retval None
   */
 void SystemClock_Config(void)
+
 {
   LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
   while(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_0)
