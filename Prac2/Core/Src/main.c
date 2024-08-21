@@ -355,7 +355,40 @@ void EXTI0_1_IRQHandler(void)
 
 	// TODO: Disable DMA transfer and abort IT, then start DMA in IT mode with new LUT and re-enable transfer
 	// HINT: Consider using C's "switch" function to handle LUT changes
+  uint32_t currentInterrupt = HAL_GetTick();
+	if (currentInterrupt - lastInterrupt > 500){ // delay of 500ms
+		//__HAL_DMA_DISABLE(&hdma_tim2_ch1);       // Disable DMA channel
+		HAL_DMA_Abort_IT(&hdma_tim2_ch1);       // Abort ongoing DMA transfer
+		// __HAL_DMA_DISABLE(&hdma_tim2_ch1);
+		counter++;
+		if (counter > 2) {
+		counter =0;
+		}
+	    HAL_DMA_Start_IT(&hdma_tim2_ch1, (uint32_t)waveforms[counter], DestAddress, NS) ;
+	    __HAL_DMA_ENABLE(&hdma_tim2_ch1);
 
+
+
+
+		init_LCD();
+		        lcd_command(CLEAR);
+		        switch(counter) {
+		            case 0:
+		                lcd_putstring("Sine");
+		                break;
+		            case 1:
+		                lcd_putstring("Sawtooth");
+		                break;
+		            case 2:
+		                lcd_putstring("Triangle");
+		                break;
+		        }
+
+	}
+
+	lastInterrupt=currentInterrupt;
+
+	HAL_GPIO_EXTI_IRQHandler(Button0_Pin);
 
 
 	HAL_GPIO_EXTI_IRQHandler(Button0_Pin); // Clear interrupt flags
