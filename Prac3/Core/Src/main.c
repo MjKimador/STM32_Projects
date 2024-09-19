@@ -647,7 +647,7 @@ static uint8_t read_from_address(uint16_t address) {
 	dummy = SPI2->DR;
 
 	// Clock in the data
-	*((uint8_t*)(&SPI2->DR)) = 0x42; 			// Clock out some junk data
+	*((uint8_t*)(&SPI2->DR)) = 0x42; 			
 	while ((SPI2->SR & SPI_SR_RXNE) == 0); 		// Hang while RX is empty
 	dummy = SPI2->DR;
 	GPIOB->BSRR |= GPIO_BSRR_BS_12; 			// Pull CS high
